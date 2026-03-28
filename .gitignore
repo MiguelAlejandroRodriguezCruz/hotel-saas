@@ -1,3 +1,117 @@
-target/
-node_modules/
+# ======================
+
+# GENERAL
+
+# ======================
+
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.swp
+
+# ======================
+
+# IDEs
+
+# ======================
+
+.vscode/
+.idea/
+*.iml
+
+# ======================
+
+# ENV FILES (MUY IMPORTANTE)
+
+# ======================
+
 .env
+.env.*
+*.env
+
+# ======================
+
+# JAVA / SPRING BOOT
+
+# ======================
+
+# Maven
+
+target/
+!**/src/main/**
+!**/src/test/**
+
+# Gradle
+
+.gradle/
+build/
+
+# Logs
+
+logs/
+*.log
+
+# ======================
+
+# NODE / FRONTEND
+
+# ======================
+
+node_modules/
+dist/
+build/
+coverage/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ======================
+
+# DOCKER
+
+# ======================
+
+docker-data/
+*.pid
+
+# ======================
+
+# OS FILES
+
+# ======================
+
+ehthumbs.db
+Icon?
+desktop.ini
+
+# ======================
+
+# TEST / COVERAGE
+
+# ======================
+
+coverage/
+*.lcov
+
+# ======================
+
+# SECURITY
+
+# ======================
+
+*.key
+*.pem
+*.crt
+*.p12
+
+# ======================
+
+# MISC
+
+# ======================
+
+*.zip
+*.tar
+*.gz
+*.rar
