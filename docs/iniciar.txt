@@ -1,0 +1,130 @@
+PROYECTO HOTEL SAAS - GUÍA PARA LEVANTAR SERVICIOS
+
+========================================
+
+1. BASE DE DATOS (POSTGRES EN DOCKER)
+   ========================================
+
+Ubicación: carpeta donde está docker-compose.yml
+
+PASOS:
+
+1. Abrir la aplicacion de Docker Desktop
+
+2. Abrir terminal en la carpeta del proyecto
+
+3. Ejecutar:
+   docker-compose up -d
+
+4. Verificar que el contenedor esté corriendo:
+   docker ps
+
+   Debe aparecer:
+   hotel_postgres
+
+DATOS DE CONEXIÓN:
+
+* Host: localhost
+* Puerto: 5433
+* Base de datos: hotel_saas
+* Usuario: postgres
+* Password: admin
+
+URL DE CONEXIÓN (ejemplo):
+jdbc:postgresql://localhost:5433/hotel_saas
+
+DETENER BD:
+docker-compose down
+
+========================================
+2. EUREKA SERVER (SERVICE DISCOVERY)
+====================================
+
+Ubicación: proyecto eureka-server
+
+PASOS:
+
+1. Entrar al proyecto:
+   cd eureka-server
+
+2. Ejecutar:
+   mvn spring-boot:run
+
+O si ya está compilado:
+java -jar target/eureka-server.jar
+
+VERIFICACIÓN:
+
+Abrir navegador en:
+http://localhost:8761
+
+Debe mostrarse el panel de Eureka
+
+========================================
+3. AUTH SERVICE
+===============
+
+Ubicación: proyecto auth-service
+
+IMPORTANTE:
+
+* Asegurarse de que Eureka esté corriendo antes
+
+PASOS:
+
+1. Entrar al proyecto:
+   cd auth-service
+
+2. Ejecutar:
+   mvn spring-boot:run
+
+VERIFICACIÓN:
+
+1. Revisar en consola que se registre en Eureka
+2. Revisar la url http://localhost:8081/auth/test
+3. Ir a:
+   http://localhost:8761
+
+   Debe aparecer:
+   AUTH-SERVICE
+
+========================================
+4. API GATEWAY
+==============
+
+Ubicación: proyecto api-gateway
+
+IMPORTANTE:
+
+* Eureka debe estar activo
+* Auth-service debe estar activo
+
+PASOS:
+
+1. Entrar al proyecto:
+   cd api-gateway
+
+2. Ejecutar:
+   mvn spring-boot:run
+
+
+VERIFICACIÓN:
+
+1. Revisar la url http://localhost:8080/auth-service/auth/test
+2. Revisar en Eureka:
+   http://localhost:8761
+
+   Debe aparecer:
+   API-GATEWAY
+
+2. Probar endpoint (ejemplo):
+   http://localhost:8080/auth/...
+
+========================================
+ORDEN CORRECTO DE ARRANQUE
+==========================
+
+1. Docker (Postgres)
+2. Eureka Server
+3. Auth Service
+4. API Gateway

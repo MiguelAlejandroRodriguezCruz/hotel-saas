@@ -1,0 +1,3 @@
+El application.properties de auth-services tengo spring.jpa.hibernate.ddl-auto=update 
+provicional para desarrollo
+
