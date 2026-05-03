@@ -1,3 +1,5 @@
 El application.properties de auth-services tengo spring.jpa.hibernate.ddl-auto=update 
 provicional para desarrollo
 
+Todas las contraseñas y claves debo cambiarlas ha .env y asegurarlas al final antes de 
+desplegar
