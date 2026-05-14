@@ -23,21 +23,12 @@ public class UserHeaderFilter implements GlobalFilter {
 
                     var authentication = securityContext.getAuthentication();
 
-                    //SI NO HAY USUARIO → solo limpiar headers
+                    // SIN JWT → dejar pasar normal
                     if (authentication == null || !(authentication.getPrincipal() instanceof Jwt jwt)) {
-
-                        ServerHttpRequest cleanRequest = exchange.getRequest()
-                                .mutate()
-                                .headers(headers -> {
-                                    headers.remove("X-User-Email");
-                                    headers.remove("X-User-Roles");
-                                })
-                                .build();
-
-                        return chain.filter(exchange.mutate().request(cleanRequest).build());
+                        return chain.filter(exchange);
                     }
 
-                    //EXTRAER DATOS
+                    // EXTRAER DATOS
                     String email = jwt.getSubject();
 
                     String roles = authentication.getAuthorities()
@@ -45,19 +36,19 @@ public class UserHeaderFilter implements GlobalFilter {
                             .map(auth -> auth.getAuthority().replace("ROLE_", ""))
                             .collect(Collectors.joining(","));
 
-                    // 🔥 LIMPIAR + AGREGAR HEADERS
+                    // AGREGAR HEADERS
                     ServerHttpRequest mutatedRequest = exchange.getRequest()
                             .mutate()
                             .headers(headers -> {
-                                headers.remove("X-User-Email");
-                                headers.remove("X-User-Roles");
-
-                                headers.add("X-User-Email", email);
-                                headers.add("X-User-Roles", roles);
+                                headers.set("X-User-Email", email);
+                                headers.set("X-User-Roles", roles);
                             })
                             .build();
 
                     return chain.filter(exchange.mutate().request(mutatedRequest).build());
-                });
+                })
+                // ✅ ESTE ES EL FIX REAL
+                .switchIfEmpty(chain.filter(exchange));
     }
+
 }
